@@ -190,10 +190,10 @@ def updateQueryTask3(book_id,nouns,verbs,total_verbs_nouns, stemmed_words, stemm
     if var:
         print(var)
 
-@app.route("/similar_documents/<book_id>/<your_string>",methods=['GET'])
-def similar_document(book_id,your_string):
+@app.route("/similar_documents/<first_book>/<second_book>",methods=['GET'])
+def similar_document(first_string,second_string):
 
-    similar= Task4.sentence_similarity(book_id+".txt",your_string)
+    similar= Task4.sentence_similarity(first_string,second_string)
     print("returning data")
     return str(round(similar, 1))
 

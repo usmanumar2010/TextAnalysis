@@ -5,9 +5,12 @@ import operator
 import  os
 
 
-def sentence_similarity(book,string):
+def sentence_similarity(first_book,second_book):
+    my_books={'1':'The Notebooks of Leonardo Da Vinci','2':'The Outline of Science, Vol. 1 (of 4) by J. Arthur Thomson','3':'The Picture of Dorian Gray by Oscar Wilde','4':'Ulysses by James Joyce'}
+
+
     lines=""
-    with open(os.path.join(os.path.dirname(__file__), 'Books', 'The Notebooks of Leonardo Da Vinci.txt'),
+    with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
               'r') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
         lines=lines+str(f.readlines())
 
@@ -17,14 +20,27 @@ def sentence_similarity(book,string):
     dictionary = gensim.corpora.Dictionary(gen_docs) # converting the list of tokens into dictionary
     corpus = [dictionary.doc2bow(gen_doc) for gen_doc in gen_docs] # A corpus is a list of bags of words. A bag-of-words representation for a document just lists the number of times each word occurs in the document.
     tf_idf = gensim.models.TfidfModel(corpus) #a tf-idf model from the corpus. Note that num_nnz is the number of tokens.
-
-
     sims = gensim.similarities.Similarity(os.path.join(os.path.dirname(__file__), 'Books'), tf_idf[corpus],num_features=len(dictionary)) #tf-idf stands for term frequency-inverse document frequency. Term frequency is how often the word shows up in the document and inverse document fequency scales the value by how rare the word is in the corpus.
-    query_doc = [w.lower() for w in word_tokenize(string)] #string is user inputed sentence. tokenzing the sentence
-    query_doc_bow = dictionary.doc2bow(query_doc) # create tuple of above tokenized string in the form of i.e [(1,2),(2,3),(3,4)]
-    query_doc_tf_idf = tf_idf[query_doc_bow] #get tokens which are significant ,using this we can find sentence is similar to which sentence
 
-    index, value = max(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1)) #getting the index ,value of maximum token for most similar sentence
+
+    #for second book
+    second_book_lines=""
+
+    count=0
+    with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(second_book)),
+              'r') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+        if(count<200):
+            second_book_lines=second_book_lines+str(f.readlines())
+    sentences_second_book = nltk.sent_tokenize(second_book_lines) # tokenizing document using nltk into sentences
+
+    score_of_each_sente=[]
+    for one_by_one_sentence in sentences_second_book:
+        query_doc = [w.lower() for w in word_tokenize(one_by_one_sentence)] #string is user inputed sentence. tokenzing the sentence
+        query_doc_bow = dictionary.doc2bow(query_doc) # create tuple of above tokenized string in the form of i.e [(1,2),(2,3),(3,4)]
+        query_doc_tf_idf = tf_idf[query_doc_bow] #get tokens which are significant ,using this we can find sentence is similar to which sentence
+        index, value = max(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1)) #getting the index ,value of maximum token for most similar sentence
+        score_of_similarities
+
     # min_index, min_value = min(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1))#getting the index ,value of minimum token for most similar sentence
 
     # print(sum(sims[query_doc_tf_idf]))
