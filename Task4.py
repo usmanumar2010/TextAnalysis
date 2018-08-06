@@ -2,14 +2,14 @@ import gensim
 import  nltk
 from nltk.tokenize import word_tokenize
 import operator
+import  os
+
 
 def sentence_similarity(book,string):
-
-    try:
-        File = open('Books/'+book,encoding = "ISO-8859-1")  # open file
-    except:
-        File = open('Books/' + book, encoding=None)
-    lines = File.read()  # read all lines
+    lines=""
+    with open(os.path.join(os.path.dirname(__file__), 'Books', 'The Notebooks of Leonardo Da Vinci.txt'),
+              'r') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+        lines=lines+str(f.readlines())
 
     sentences = nltk.sent_tokenize(lines) # tokenizing document using nltk into sentences
     gen_docs = [[ "".join(filter(str.isalpha,w.lower()))  for w in word_tokenize(text)] # list of sentences with each sentences is list of tokens word_tokenzie()--> provides listof tokens
@@ -19,13 +19,18 @@ def sentence_similarity(book,string):
     tf_idf = gensim.models.TfidfModel(corpus) #a tf-idf model from the corpus. Note that num_nnz is the number of tokens.
 
 
-    sims = gensim.similarities.Similarity('Books/', tf_idf[corpus],num_features=len(dictionary)) #tf-idf stands for term frequency-inverse document frequency. Term frequency is how often the word shows up in the document and inverse document fequency scales the value by how rare the word is in the corpus.
+    sims = gensim.similarities.Similarity(os.path.join(os.path.dirname(__file__), 'Books'), tf_idf[corpus],num_features=len(dictionary)) #tf-idf stands for term frequency-inverse document frequency. Term frequency is how often the word shows up in the document and inverse document fequency scales the value by how rare the word is in the corpus.
     query_doc = [w.lower() for w in word_tokenize(string)] #string is user inputed sentence. tokenzing the sentence
     query_doc_bow = dictionary.doc2bow(query_doc) # create tuple of above tokenized string in the form of i.e [(1,2),(2,3),(3,4)]
     query_doc_tf_idf = tf_idf[query_doc_bow] #get tokens which are significant ,using this we can find sentence is similar to which sentence
 
     index, value = max(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1)) #getting the index ,value of maximum token for most similar sentence
-    min_index, min_value = min(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1))#getting the index ,value of minimum token for most similar sentence
+    # min_index, min_value = min(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1))#getting the index ,value of minimum token for most similar sentence
 
-    print(sum(sims[query_doc_tf_idf]))
-    return (sentences[index],sentences[min_index]) # getting similar and dissimilar sentece using above indexes
+    # print(sum(sims[query_doc_tf_idf]))
+    # return (sentences[index],sentences[min_index]) # getting similar and dissimilar sentece using above indexes
+    #
+
+
+    # return sims[query_doc_tf_idf]
+    return value

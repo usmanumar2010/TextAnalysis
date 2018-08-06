@@ -7,7 +7,7 @@ sys.path.append("./Questions/")
 import Task2
 import Task1
 import Task3
-
+import  Task4
 # sys.path.append("/Questions/Task1.py")
 
 app = Flask(__name__)
@@ -101,10 +101,7 @@ def part_of_speech(book_id):
             return "HELLO" +json.dumps(total_noun_verbs)+" "+json.dumps(nouns)+ json.dumps(nouns)
     return "task 3 Books only from 1 to 4"
 
-@app.route("/documnet_similarity/<book_id>")
-def document_similarity():
 
-    return
 
 def insertQueryTask1(book_id, data):
         var = db.processed_text.insert(
@@ -193,7 +190,12 @@ def updateQueryTask3(book_id,nouns,verbs,total_verbs_nouns, stemmed_words, stemm
     if var:
         print(var)
 
+@app.route("/similar_documents/<book_id>/<your_string>",methods=['GET'])
+def similar_document(book_id,your_string):
 
+    similar= Task4.sentence_similarity(book_id+".txt",your_string)
+    print("returning data")
+    return str(round(similar, 1))
 
 if __name__ == "__main__":
     app.run(debug = True)
