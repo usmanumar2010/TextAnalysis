@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="881fa32a-504c-4610-adba-2169617e7dde" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Task4.py" afterPath="$PROJECT_DIR$/Task4.py" />
-    </list>
+    <list default="true" id="881fa32a-504c-4610-adba-2169617e7dde" name="Default" comment="fift" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -425,6 +422,14 @@
       <option name="presentableId" value="Default" />
       <updated>1533422870094</updated>
     </task>
+    <task id="LOCAL-00001" summary="fifth commit">
+      <created>1533504020713</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1533504020714</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
