@@ -12,7 +12,7 @@ def sentence_similarity(first_book,second_book):
     lines=""
     try:
          with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
-              'r') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+              'r') as f:
               lines=lines+str(f.readlines())
     except:
          with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
@@ -25,7 +25,7 @@ def sentence_similarity(first_book,second_book):
     dictionary = gensim.corpora.Dictionary(gen_docs) # converting the list of tokens into dictionary
     corpus = [dictionary.doc2bow(gen_doc) for gen_doc in gen_docs] # A corpus is a list of bags of words. A bag-of-words representation for a document just lists the number of times each word occurs in the document.
     tf_idf = gensim.models.TfidfModel(corpus) #a tf-idf model from the corpus. Note that num_nnz is the number of tokens.
-    sims = gensim.similarities.Similarity(os.path.join(os.path.dirname(__file__), 'Books'), tf_idf[corpus],num_features=len(dictionary)) #tf-idf stands for term frequency-inverse document frequency. Term frequency is how often the word shows up in the document and inverse document fequency scales the value by how rare the word is in the corpus.
+    sims = gensim.similarities.Similarity(os.path.join(os.path.dirname(__file__), '.'), tf_idf[corpus],num_features=len(dictionary)) #tf-idf stands for term frequency-inverse document frequency. Term frequency is how often the word shows up in the document and inverse document fequency scales the value by how rare the word is in the corpus.
 
 
     #for second book

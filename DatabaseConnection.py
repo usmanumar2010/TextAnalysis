@@ -8,6 +8,8 @@ import Task2
 import Task1
 import Task3
 import  Task4
+from nltk.stem.snowball import SnowballStemmer
+
 # sys.path.append("/Questions/Task1.py")
 
 app = Flask(__name__)
@@ -38,12 +40,12 @@ def refined_book(book_id):
                 # words_dictionary = json.loads(words_json)  # converting json to a dictionary
                 return "direct"+words_json
             else:  # if words_count is not present ,id database crashes so not create the collection again just update it
-                data = Task1.show_the_list_of_stop_words()  # calling function written in main.py to calculate the word_count with respect to book_id
+                data = Task1.show_the_list_of_stop_words(book_id)  # calling function written in main.py to calculate the word_count with respect to book_id
                 updateQueryTask2(book_id,
                                  data)  # updating words against book_id in the database so that next time no need to call the main function again
                 return "updated"+json.dumps(data)
         else:
-            words_are = Task1.show_the_list_of_stop_words()
+            words_are = Task1.show_the_list_of_stop_words(book_id)
             insertQueryTask1(book_id, words_are)
             return "HELLO" + json.dumps(words_are)
     return "Books only from 1 to 4"
@@ -54,20 +56,18 @@ def stemmed_lemmatized(book_id):
 
     if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4':
         query = db.processed_text.find_one({'book_id': book_id})
-        print("-----------------")
-        print(query)
-        print("-----------------")
+
         if query:
             if query["stemmed_words_count"]:  # if stemmed_words_count dictionary is present in database
                 stemmed_words_count = query["stemmed_words_count"]
                 # words_dictionary = json.loads(words_json)  # converting json to a dictionary
                 return "direct"+stemmed_words_count
             else:  # if words_count is not present ,id database crashes so not create the collection again just update it
-                stemmed_words_count,stemmed_words = Task2.stemming()  # calling function written in main.py to calculate the word_count with respect to book_id
+                stemmed_words_count,stemmed_words = Task2.stemming(book_id)  # calling function written in main.py to calculate the word_count with respect to book_id
                 updateQueryTask2(book_id,stemmed_words, stemmed_words_count)  # updating words against book_id in the database so that next time no need to call the main function again
                 return "updated"+json.dumps(stemmed_words_count)
         else:
-            stemmed_words_count, stemmed_words = Task2.stemming()
+            stemmed_words_count, stemmed_words = Task2.stemming(book_id)
             insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
             return "HELLO" + json.dumps(stemmed_words_count)
     return "Books only from 1 to 4"
@@ -81,7 +81,7 @@ def part_of_speech(book_id):
             if query["nouns"]:
                 return "direct"+query['total_verbs_nouns']+" "+query['nouns']
             else:
-                stemmed_words_count, stemmed_words = Task2.stemming()
+                stemmed_words_count, stemmed_words = Task2.stemming(book_id)
                 nouns, verbs = Task3.part_of_speech(stemmed_words)
                 total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
 
@@ -90,7 +90,7 @@ def part_of_speech(book_id):
 
 
         else:
-            stemmed_words_count, stemmed_words = Task2.stemming()
+            stemmed_words_count, stemmed_words = Task2.stemming(book_id)
             #insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
 
             #task3
@@ -100,7 +100,36 @@ def part_of_speech(book_id):
 
             return "HELLO" +json.dumps(total_noun_verbs)+" "+json.dumps(nouns)+ json.dumps(nouns)
     return "task 3 Books only from 1 to 4"
+@app.route("/similar_documents/<first_book>/<second_book>",methods=['GET'])
+def similar_document(first_book,second_book):
 
+    percentage= Task4.sentence_similarity(first_book,second_book)
+
+    return "The similarity between the two documents is ="+str(percentage) +" percent"
+
+@app.route("/send_a_word/<book_id>/<word>")
+def send_a_word(book_id,word):
+    if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4':
+
+        stemmer = SnowballStemmer('english')
+        base_word=stemmer.stem(word)
+        query = db.processed_text.find_one({'book_id': book_id})
+
+        if query:
+            if query["stemmed_words_count"]:  # if stemmed_words_count dictionary is present in database
+                stemmed_words_count = json.loads(query["stemmed_words_count"])
+                return "direct " +base_word+ ":" +str(stemmed_words_count[base_word])
+            else:  # if words_count is not present ,id database crashes so not create the collection again just update it
+                stemmed_words_count,stemmed_words = Task2.stemming()  # calling function written in main.py to calculate the word_count with respect to book_id
+                updateQueryTask2(book_id,stemmed_words, stemmed_words_count)  # updating words against book_id in the database so that next time no need to call the main function again
+                return "updated"+base_word + ":" + str(stemmed_words_count[base_word])
+        else:
+            stemmed_words_count, stemmed_words = Task2.stemming()
+            insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
+            return "HELLO" + base_word + ":" + str(stemmed_words_count[base_word])
+
+
+    return "Books only from 1 to 4"
 
 
 def insertQueryTask1(book_id, data):
@@ -190,12 +219,7 @@ def updateQueryTask3(book_id,nouns,verbs,total_verbs_nouns, stemmed_words, stemm
     if var:
         print(var)
 
-@app.route("/similar_documents/<first_book>/<second_book>",methods=['GET'])
-def similar_document(first_book,second_book):
 
-    percentage= Task4.sentence_similarity(first_book,second_book)
-
-    return "The similarity between the two documents is ="+str(percentage) +" percent"
 
 if __name__ == "__main__":
     app.run(debug = True)
