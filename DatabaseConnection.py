@@ -27,11 +27,16 @@ db = client.text_analysis
 
 @app.route("/")
 def hello():
-    return "Hello Connectavo"
+
+    #filling data for book 1
 
 
+
+    return "Welcome to Connectavo"
+
+@app.route("/refined_book/")
 @app.route("/refined_book/<book_id>")
-def refined_book(book_id):
+def refined_book(book_id='all'):
     if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4':
         query = db.processed_text.find_one({'book_id': book_id})
         if query:
@@ -48,7 +53,23 @@ def refined_book(book_id):
             words_are = Task1.show_the_list_of_stop_words(book_id)
             insertQueryTask1(book_id, words_are)
             return "HELLO" + json.dumps(words_are)
-    return "Books only from 1 to 4"
+    elif book_id=='ALL' or book_id=='all':
+
+           list_of_all_books=['1','2','3','4']
+           for book_no in list_of_all_books:
+               query = db.processed_text.find_one({'book_id': book_no})
+               if query:
+                    if query["words"]:  # if words_count dictionary is present in database
+                        words_json = json.loads(query["words"])
+                        # words_dictionary = json.loads(words_json)  # converting json to a dictionary
+                    else:  # if words_count is not present ,id database crashes so not create the collection again just update it
+                        data = Task1.show_the_list_of_stop_words(book_no)  # calling function written in main.py to calculate the word_count with respect to book_id
+                        updateQueryTask2(book_no,data)  # updating words against book_id in the database so that next time no need to call the main function again
+               else:
+                     words_are = Task1.show_the_list_of_stop_words(book_no)
+                     insertQueryTask1(book_no, words_are)
+
+           return "ALL"
 
 
 @app.route("/stemmed_lemmatized/<book_id>")
@@ -140,8 +161,9 @@ def similarity_of_all(string):
                 count_for_second_book=4
                 while(count_for_second_book>=1):
                     percentage_of_each=Task4.sentence_similarity(str(count),str(count_for_second_book))
-                    list_of_sim_matrix[str(count)+'for'+str(count_for_second_book)]=str(percentage_of_each)
+                    list_of_sim_matrix[str(count)+' and '+str(count_for_second_book)]=str(percentage_of_each)
                     count_for_second_book -=1
+
                 count +=1
             return json.dumps(list_of_sim_matrix)
     return "Not a required Strinh"
