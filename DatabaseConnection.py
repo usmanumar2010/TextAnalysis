@@ -131,6 +131,22 @@ def send_a_word(book_id,word):
 
     return "Books only from 1 to 4"
 
+@app.route("/similarity_of_all/<string>")
+def similarity_of_all(string):
+    if string.lower()=='all':
+            list_of_sim_matrix = dict()
+            count=1
+            while(count<=4):
+                count_for_second_book=4
+                while(count_for_second_book>=1):
+                    percentage_of_each=Task4.sentence_similarity(str(count),str(count_for_second_book))
+                    list_of_sim_matrix[str(count)+'for'+str(count_for_second_book)]=str(percentage_of_each)
+                    count_for_second_book -=1
+                count +=1
+            return json.dumps(list_of_sim_matrix)
+    return "Not a required Strinh"
+
+
 
 def insertQueryTask1(book_id, data):
         var = db.processed_text.insert(
