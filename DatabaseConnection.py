@@ -110,33 +110,79 @@ def stemmed_lemmatized(book_id='all'):
 
     return "Books only from 1 to 4"
 
-
+@app.route("/part_of_speech/")
 @app.route("/part_of_speech/<book_id>")
-def part_of_speech(book_id):
+def part_of_speech(book_id='all'):
     if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4':
         query = db.processed_text.find_one({'book_id': book_id})
         if query:
             if query["nouns"]:
                 return "direct"+query['total_verbs_nouns']+" "+query['nouns']
             else:
-                stemmed_words_count, stemmed_words = Task2.stemming(book_id)
-                nouns, verbs = Task3.part_of_speech(stemmed_words)
-                total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
 
-                updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
-                return "task 3 updated" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+                #when the stemmed words and count is present but the noun  and verbs are not
+                if query["stemmed_words_count"]:
+                    stemmed_words_count = json.loads(query["stemmed_words_count"])
+                    stemmed_words=json.loads(query["stemmed_words_count"])
+                    nouns, verbs = Task3.part_of_speech(stemmed_words)
+                    total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
+                    updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
+                    return "updated when stemmed word exists" + json.dumps(total_noun_verbs) + json.dumps(nouns)
 
+                else:
+                    #when document is present but it neither contains nouns and verbs and stemmed word count and stemmed words
+                    stemmed_words_count, stemmed_words = Task2.stemming(book_id)
+                    nouns, verbs = Task3.part_of_speech(stemmed_words)
+                    total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
+                    updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
+                    return "updated doc exits but nothin in it" + json.dumps(total_noun_verbs) + json.dumps(nouns)
 
         else:
+            #when no document present agains book_id
             stemmed_words_count, stemmed_words = Task2.stemming(book_id)
-            #insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
-
+            #insetQueryTask2(book_id, stemmed_words, stemmed_words_count
             #task3
             nouns, verbs = Task3.part_of_speech(stemmed_words)
             total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
             insetQueryTask3(book_id, nouns, verbs, total_noun_verbs,stemmed_words,stemmed_words_count)
 
             return "HELLO" +json.dumps(total_noun_verbs)+" "+json.dumps(nouns)+ json.dumps(nouns)
+    elif book_id=='all' or book_id=='ALL':
+        list_of_all_books = ['1', '2', '3', '4']
+        for book_no in list_of_all_books:
+            query = db.processed_text.find_one({'book_id': book_no})
+            if query:
+                if query["nouns"]:
+                    return "direct" + query['total_verbs_nouns'] + " " + query['nouns']
+                else:
+
+                    # when the stemmed words and count is present but the noun  and verbs are not
+                    if query["stemmed_words_count"]:
+                        stemmed_words_count = json.loads(query["stemmed_words_count"])
+                        stemmed_words = json.loads(query["stemmed_words_count"])
+                        nouns, verbs = Task3.part_of_speech(stemmed_words)
+                        total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
+                        updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
+                        return "updated when stemmed word exists" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+
+                    else:
+                        # when document is present but it neither contains nouns and verbs and stemmed word count and stemmed words
+                        stemmed_words_count, stemmed_words = Task2.stemming(book_id)
+                        nouns, verbs = Task3.part_of_speech(stemmed_words)
+                        total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
+                        updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
+                        return "updated doc exits but nothin in it" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+
+            else:
+                # when no document present agains book_id
+                stemmed_words_count, stemmed_words = Task2.stemming(book_id)
+                # insetQueryTask2(book_id, stemmed_words, stemmed_words_count
+                # task3
+                nouns, verbs = Task3.part_of_speech(stemmed_words)
+                total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
+                insetQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
+
+                return "HELLO" + json.dumps(total_noun_verbs) + " " + json.dumps(nouns) + json.dumps(nouns)
     return "task 3 Books only from 1 to 4"
 @app.route("/similar_documents/<first_book>/<second_book>",methods=['GET'])
 def similar_document(first_book,second_book):
