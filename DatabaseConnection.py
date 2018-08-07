@@ -191,11 +191,11 @@ def updateQueryTask3(book_id,nouns,verbs,total_verbs_nouns, stemmed_words, stemm
         print(var)
 
 @app.route("/similar_documents/<first_book>/<second_book>",methods=['GET'])
-def similar_document(first_string,second_string):
+def similar_document(first_book,second_book):
 
-    similar= Task4.sentence_similarity(first_string,second_string)
-    print("returning data")
-    return str(round(similar, 1))
+    percentage= Task4.sentence_similarity(first_book,second_book)
+
+    return "The similarity between the two documents is ="+str(percentage) +" percent"
 
 if __name__ == "__main__":
     app.run(debug = True)

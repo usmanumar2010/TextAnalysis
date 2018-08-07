@@ -6,14 +6,19 @@ import  os
 
 
 def sentence_similarity(first_book,second_book):
-    my_books={'1':'The Notebooks of Leonardo Da Vinci','2':'The Outline of Science, Vol. 1 (of 4) by J. Arthur Thomson','3':'The Picture of Dorian Gray by Oscar Wilde','4':'Ulysses by James Joyce'}
+    my_books={'1':'The Notebooks of Leonardo Da Vinci.txt','2':'The Outline of Science, Vol. 1 (of 4) by J. Arthur Thomson.txt','3':'The Picture of Dorian Gray by Oscar Wilde.txt','4':'Ulysses by James Joyce.txt'}
 
 
     lines=""
-    with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
+    try:
+         with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
               'r') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
-        lines=lines+str(f.readlines())
-
+              lines=lines+str(f.readlines())
+    except:
+         with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
+              'r',
+              encoding='UTF8') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+              lines = lines + str(f.readlines())
     sentences = nltk.sent_tokenize(lines) # tokenizing document using nltk into sentences
     gen_docs = [[ "".join(filter(str.isalpha,w.lower()))  for w in word_tokenize(text)] # list of sentences with each sentences is list of tokens word_tokenzie()--> provides listof tokens
                 for text in sentences]
@@ -27,19 +32,27 @@ def sentence_similarity(first_book,second_book):
     second_book_lines=""
 
     count=0
-    with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(second_book)),
+    try:
+
+        with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(second_book)),
               'r') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
-        if(count<200):
-            second_book_lines=second_book_lines+str(f.readlines())
+          if(count<200):
+             second_book_lines=second_book_lines+str(f.readlines())
+    except:
+        count=0
+        with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(second_book)),
+              'r',encoding='UTF8') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+          if(count<200):
+             second_book_lines=second_book_lines+str(f.readlines())
     sentences_second_book = nltk.sent_tokenize(second_book_lines) # tokenizing document using nltk into sentences
 
-    score_of_each_sente=[]
+    score_of_each_sent=[]
     for one_by_one_sentence in sentences_second_book:
         query_doc = [w.lower() for w in word_tokenize(one_by_one_sentence)] #string is user inputed sentence. tokenzing the sentence
         query_doc_bow = dictionary.doc2bow(query_doc) # create tuple of above tokenized string in the form of i.e [(1,2),(2,3),(3,4)]
         query_doc_tf_idf = tf_idf[query_doc_bow] #get tokens which are significant ,using this we can find sentence is similar to which sentence
         index, value = max(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1)) #getting the index ,value of maximum token for most similar sentence
-        score_of_similarities
+        score_of_each_sent.append(round(value, 1))
 
     # min_index, min_value = min(enumerate(sims[query_doc_tf_idf]), key=operator.itemgetter(1))#getting the index ,value of minimum token for most similar sentence
 
@@ -47,6 +60,8 @@ def sentence_similarity(first_book,second_book):
     # return (sentences[index],sentences[min_index]) # getting similar and dissimilar sentece using above indexes
     #
 
+    add_score_of_sent=0.0
+    for s in score_of_each_sent:
+         add_score_of_sent=s+add_score_of_sent
 
-    # return sims[query_doc_tf_idf]
-    return value
+    return  ((add_score_of_sent/len(sentences_second_book))*100)
