@@ -71,9 +71,9 @@ def refined_book(book_id='all'):
 
            return "ALL"
 
-
+@app.route("/stemmed_lemmatized/")
 @app.route("/stemmed_lemmatized/<book_id>")
-def stemmed_lemmatized(book_id):
+def stemmed_lemmatized(book_id='all'):
 
     if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4':
         query = db.processed_text.find_one({'book_id': book_id})
@@ -91,6 +91,23 @@ def stemmed_lemmatized(book_id):
             stemmed_words_count, stemmed_words = Task2.stemming(book_id)
             insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
             return "HELLO" + json.dumps(stemmed_words_count)
+    elif book_id=='all' or book_id=='ALL':
+        list_of_all_books = ['1', '2', '3', '4']
+        for book_no in list_of_all_books:
+            query = db.processed_text.find_one({'book_id': book_no})
+            if query:
+                if query["stemmed_words_count"]:  # if stemmed_words_count dictionary is present in database
+                    stemmed_words_count = query["stemmed_words_count"]
+                    # words_dictionary = json.loads(words_json)  # converting json to a dictionary
+                else:  # if words_count is not present ,id database crashes so not create the collection again just update it
+                    stemmed_words_count, stemmed_words = Task2.stemming(
+                        book_id)  # calling function written in main.py to calculate the word_count with respect to book_id
+                    updateQueryTask2(book_id, stemmed_words,
+                                     stemmed_words_count)  # updating words against book_id in the database so that next time no need to call the main function again
+            else:
+                stemmed_words_count, stemmed_words = Task2.stemming(book_id)
+                insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
+
     return "Books only from 1 to 4"
 
 
