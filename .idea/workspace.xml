@@ -34,7 +34,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DatabaseConnection.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DatabaseConnection.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DatabaseConnection.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
@@ -73,7 +73,7 @@
       <file leaf-file-name="Task3.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Task3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
+            <state relative-caret-position="182">
               <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -82,7 +82,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Task4.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Task4.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Task4.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="423">
@@ -121,8 +121,8 @@
         <option value="$PROJECT_DIR$/DatabaseConnection.py" />
         <option value="$PROJECT_DIR$/Task1.py" />
         <option value="$PROJECT_DIR$/Task2.py" />
-        <option value="$PROJECT_DIR$/Task3.py" />
         <option value="$PROJECT_DIR$/Task4.py" />
+        <option value="$PROJECT_DIR$/Task3.py" />
       </list>
     </option>
   </component>
@@ -618,22 +618,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DatabaseConnection.py">
+    <entry file="file://$PROJECT_DIR$/Task4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="217" column="45" lean-forward="true" selection-start-line="217" selection-start-column="45" selection-end-line="217" selection-end-column="45" />
+        <state relative-caret-position="423">
+          <caret line="61" column="129" lean-forward="true" selection-start-line="61" selection-start-column="129" selection-end-line="61" selection-end-column="129" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Task1.py">
+    <entry file="file://$PROJECT_DIR$/Task3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="27" column="91" lean-forward="true" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="91" />
+        <state relative-caret-position="182">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <element signature="e#1#12#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -648,22 +648,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Task3.py">
+    <entry file="file://$PROJECT_DIR$/Task1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="63">
+          <caret line="27" column="91" lean-forward="true" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="91" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#1#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Task4.py">
+    <entry file="file://$PROJECT_DIR$/DatabaseConnection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="61" column="129" lean-forward="true" selection-start-line="61" selection-start-column="129" selection-end-line="61" selection-end-column="129" />
+        <state relative-caret-position="17">
+          <caret line="217" column="45" lean-forward="true" selection-start-line="217" selection-start-column="45" selection-end-line="217" selection-end-column="45" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
