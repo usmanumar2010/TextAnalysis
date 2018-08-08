@@ -43,17 +43,17 @@ def refined_book(book_id='all'):
             if query["words"]:  # if words_count dictionary is present in database
                 words_json = query["words"]
                 # words_dictionary = json.loads(words_json)  # converting json to a dictionary
-                return "direct" + words_json
+                return  words_json
             else:  # if words_count is not present ,id database crashes so not create the collection again just update it
                 data = Task1.show_the_list_of_stop_words(
                     book_id)  # calling function written in main.py to calculate the word_count with respect to book_id
                 updateQueryTask2(book_id,
                                  data)  # updating words against book_id in the database so that next time no need to call the main function again
-                return "updated" + json.dumps(data)
+                return  json.dumps(data)
         else:
             words_are = Task1.show_the_list_of_stop_words(book_id)
             insertQueryTask1(book_id, words_are)
-            return "HELLO" + json.dumps(words_are)
+            return json.dumps(words_are)
     elif book_id == 'ALL' or book_id == 'all':
         my_dict = {}
         list_of_all_books = ['1', '2', '3', '4']
@@ -84,17 +84,17 @@ def stemmed_lemmatized(book_id='all'):
             if query["stemmed_words_count"]:  # if stemmed_words_count dictionary is present in database
                 stemmed_words_count = query["stemmed_words_count"]
                 # words_dictionary = json.loads(words_json)  # converting json to a dictionary
-                return "direct" + stemmed_words_count
+                return  stemmed_words_count
             else:  # if words_count is not present ,id database crashes so not create the collection again just update it
                 stemmed_words_count, stemmed_words = Task2.stemming(
                     book_id)  # calling function written in main.py to calculate the word_count with respect to book_id
                 updateQueryTask2(book_id, stemmed_words,
                                  stemmed_words_count)  # updating words against book_id in the database so that next time no need to call the main function again
-                return "updated" + json.dumps(stemmed_words_count)
+                return  json.dumps(stemmed_words_count)
         else:
             stemmed_words_count, stemmed_words = Task2.stemming(book_id)
             insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
-            return "HELLO" + json.dumps(stemmed_words_count)
+            return  json.dumps(stemmed_words_count)
     elif book_id == 'all' or book_id == 'ALL':
         my_dict = {}
         list_of_all_books = ['1', '2', '3', '4']
@@ -123,9 +123,8 @@ def part_of_speech(book_id='all'):
         query = db.processed_text.find_one({'book_id': book_id})
         if query:
             if query["nouns"]:
-                return "direct" + query['total_verbs_nouns'] + " " + query['nouns']
+                return  query['total_verbs_nouns'] + " " + query['nouns'] +"verbs :"+query["verbs"]
             else:
-
                 # when the stemmed words and count is present but the noun  and verbs are not
                 if query["stemmed_words_count"]:
                     stemmed_words_count = json.loads(query["stemmed_words_count"])
@@ -133,7 +132,7 @@ def part_of_speech(book_id='all'):
                     nouns, verbs = Task3.part_of_speech(stemmed_words)
                     total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
                     updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
-                    return "updated when stemmed word exists" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+                    return  json.dumps(total_noun_verbs) + json.dumps(nouns) +"verbs : "+json.dumps(verbs)
 
                 else:
                     # when document is present but it neither contains nouns and verbs and stemmed word count and stemmed words
@@ -141,7 +140,7 @@ def part_of_speech(book_id='all'):
                     nouns, verbs = Task3.part_of_speech(stemmed_words)
                     total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
                     updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
-                    return "updated doc exits but nothin in it" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+                    return   json.dumps(total_noun_verbs) + json.dumps(nouns) +"verbs : "+json.dumps(verbs)
         else:
             # when no document present agains book_id
             stemmed_words_count, stemmed_words = Task2.stemming(book_id)
@@ -151,44 +150,50 @@ def part_of_speech(book_id='all'):
             total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
             insetQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
 
-            return "HELLO" + json.dumps(total_noun_verbs) + " " + json.dumps(nouns) + json.dumps(nouns)
+            return "HELLO" + json.dumps(total_noun_verbs) + " " + json.dumps(nouns) + json.dumps(nouns) +"verbs : "+json.dumps(verbs)
     elif book_id == 'all' or book_id == 'ALL':
         list_of_all_books = ['1', '2', '3', '4']
-        my_dict = {}
+        my_dict_total_nv = {}
+        my_dict_total_n = {}
+        my_dict_total_v = {}
         for book_no in list_of_all_books:
             query = db.processed_text.find_one({'book_id': book_no})
             if query:
                 if query["nouns"]:
-                    return "direct" + query['total_verbs_nouns'] + " " + query['nouns']
+                    nouns = json.loads(query["nouns"])
+                    verbs = json.loads(query["verbs"])
+                    total_noun_verbs = json.loads(query['total_verbs_nouns'])
                 else:
 
                     # when the stemmed words and count is present but the noun  and verbs are not
                     if query["stemmed_words_count"]:
                         stemmed_words_count = json.loads(query["stemmed_words_count"])
-                        stemmed_words = json.loads(query["stemmed_words_count"])
+                        stemmed_words = json.loads(query["stemmed_words"])
                         nouns, verbs = Task3.part_of_speech(stemmed_words)
                         total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
-                        updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
-                        return "updated when stemmed word exists" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+                        updateQueryTask3(book_no, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
 
                     else:
                         # when document is present but it neither contains nouns and verbs and stemmed word count and stemmed words
-                        stemmed_words_count, stemmed_words = Task2.stemming(book_id)
+                        stemmed_words_count, stemmed_words = Task2.stemming(book_no)
                         nouns, verbs = Task3.part_of_speech(stemmed_words)
                         total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
-                        updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
-                        return "updated doc exits but nothin in it" + json.dumps(total_noun_verbs) + json.dumps(nouns)
+                        updateQueryTask3(book_no, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
 
             else:
                 # when no document present agains book_id
-                stemmed_words_count, stemmed_words = Task2.stemming(book_id)
-                # insetQueryTask2(book_id, stemmed_words, stemmed_words_count
+                stemmed_words_count, stemmed_words = Task2.stemming(book_no)
                 # task3
                 nouns, verbs = Task3.part_of_speech(stemmed_words)
                 total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}
-                insetQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
+                insetQueryTask3(book_no, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)
 
-        return "HELLO" + json.dumps(total_noun_verbs) + " " + json.dumps(nouns) + json.dumps(verbs)
+            my_dict_total_nv = Counter(my_dict_total_nv) + Counter(total_noun_verbs)
+            my_dict_total_n = Counter(my_dict_total_n) + Counter(nouns)
+            my_dict_total_v = Counter(my_dict_total_v) + Counter(verbs)
+
+        return json.dumps(my_dict_total_nv) + "nouns :" + json.dumps(my_dict_total_n) + " verbs " + json.dumps(
+            my_dict_total_v)
     return "task 3 Books only from 1 to 4"
 
 
@@ -210,16 +215,16 @@ def send_a_word(book_id, word):
         if query:
             if query["stemmed_words_count"]:  # if stemmed_words_count dictionary is present in database
                 stemmed_words_count = json.loads(query["stemmed_words_count"])
-                return "direct " + base_word + ":" + str(stemmed_words_count[base_word])
+                return  base_word + ":" + str(stemmed_words_count[base_word])
             else:  # if words_count is not present ,id database crashes so not create the collection again just update it
                 stemmed_words_count, stemmed_words = Task2.stemming()  # calling function written in main.py to calculate the word_count with respect to book_id
                 updateQueryTask2(book_id, stemmed_words,
                                  stemmed_words_count)  # updating words against book_id in the database so that next time no need to call the main function again
-                return "updated" + base_word + ":" + str(stemmed_words_count[base_word])
+                return  base_word + ":" + str(stemmed_words_count[base_word])
         else:
             stemmed_words_count, stemmed_words = Task2.stemming()
             insetQueryTask2(book_id, stemmed_words, stemmed_words_count)
-            return "HELLO" + base_word + ":" + str(stemmed_words_count[base_word])
+            return  base_word + ":" + str(stemmed_words_count[base_word])
 
     return "Books only from 1 to 4"
 
@@ -285,8 +290,6 @@ def insetQueryTask3(book_id, nouns, verbs, total_verbs_nouns, stemmed_words, ste
         }
     )
 
-    return "updated" + json.dumps(total_verbs_nouns) + " " + json.dumps(nouns)
-
 
 def updateQueryTask1(book_id, data):
     db.processed_text.update(
@@ -320,8 +323,6 @@ def updateQueryTask3(book_id, nouns, verbs, total_verbs_nouns, stemmed_words, st
                   "total_verbs_nouns": json.dumps(total_verbs_nouns)
                   }},
         upsert=False, manipulate=True, multi=True, check_keys=True)
-    if var:
-        print(var)
 
 
 if __name__ == "__main__":
