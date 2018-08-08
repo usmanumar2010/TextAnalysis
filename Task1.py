@@ -4,7 +4,6 @@ import nltk
 # write it in the documentation
 # nltk.download('stopwords')
 
-# install nltk using pip install nltk
 from nltk.corpus import stopwords
 import  os
 from nltk.tokenize import word_tokenize

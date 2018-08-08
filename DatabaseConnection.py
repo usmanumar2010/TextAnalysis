@@ -114,7 +114,7 @@ def part_of_speech(book_id='all'):
             else:#if the query is empty no document is present relative to the book id
                 if query["stemmed_words_count"]:                # if the stemmed words and count is present but the noun  and verbs are not
                     stemmed_words_count = json.loads(query["stemmed_words_count"]) #just load the json into the dictionaries
-                    stemmed_words = json.loads(query["stemmed_words_count"])#just load the json into the dictionaries
+                    stemmed_words = json.loads(query["stemmed_words"])#just load the json into the dictionaries
                     nouns, verbs = Task3.part_of_speech(stemmed_words)  #trigger the function to find the nouns and verbs with the present stemmed words
                     total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)} #store the total nouns and total verbs in the seprate dictionary
                     updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count) #update the document which already present with respective val
@@ -237,8 +237,7 @@ def insertQueryTask1(book_id, data):
             "verbs": '',
             "total_verbs_nouns": ''
         })
-    if var:
-        print("nice")
+
 
 
 def insetQueryTask2(book_id, stemmed_data, stemmed_words_count):
