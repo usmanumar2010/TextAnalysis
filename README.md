@@ -62,9 +62,9 @@ I have used the standard stop words that are present in nltk for that write  **`
  
 * Response
 
-     json reponse of words list
+      json reponse of words list
       
-     {key :value}  example {"the":"the" ,"book":"book"} 
+      {key :value}  example {"the":"the" ,"book":"book"} 
       
       
 ## Task 2
@@ -109,9 +109,9 @@ I have used the standard stop words that are present in nltk for that write  **`
      
    * Response
           
-        In response you will get the json response
+             In response you will get the json response
               
-              {key:value} or {"word":"count"} example: {go:126}
+             {key:value} or {"word":"count"} example: {go:126}
  
  ## Task 3
  #### Parts of Speech (PoS) Count
@@ -136,11 +136,11 @@ I have used the standard stop words that are present in nltk for that write  **`
    
  * Response
            
-    json response of verbs and nouns and total verbs in the book and total nouns in the book
+         json response of verbs and nouns and total verbs in the book and total nouns in the book
            
-    {key: value}{key:value}{key:value} or {"total_nouns":"count","total_verbs":"count"}{"word_noun":"count:}{"word_count":"count"}
+         {key: value}{key:value}{key:value} or {"total_nouns":"count","total_verbs":"count"}{"word_noun":"count:}{"word_count":"count"}
          
-     example :{"total_nouns": 11909, "total_verbs": 49} {"'the": 97, "'project": 4, "}
+         example :{"total_nouns": 11909, "total_verbs": 49} {"'the": 97, "'project": 4, "}
          
  
   ## Task 4
@@ -165,9 +165,9 @@ I have used the standard stop words that are present in nltk for that write  **`
     
    * Response
           
-      In response we get the percentage score of the similarity
+         In response we get the percentage score of the similarity
           
-      Example: The similarity between the two documents is =80.87093602105139 percent
+         Example: The similarity between the two documents is =80.87093602105139 percent
           
           
   * **Task 4 Part b**  
@@ -189,13 +189,12 @@ I have used the standard stop words that are present in nltk for that write  **`
    
    * Response
           
-     In response we get the percentage score of the similarity of all the books with each other   
+         In response we get the percentage score of the similarity of all the books with each other   
      
-     1 and 1 =80.87093602105139 percent
+         1 and 1 =80.87093602105139 percent
      
-     similarly 1 and 2,1 and 3, 1 and 4 , 2 and 1, 2 and 2, 2 and 3 ,2 and 4, 3 and 1, 3 and 2,3 and 3 , 3 and 4 ,4 and 1, 4 and 2  
-    
-   ,4 and 3 and 4 and 4
+          similarly 1 and 2,1 and 3, 1 and 4 , 2 and 1, 2 and 2, 2 and 3 ,2 and 4, 3 and 1, 3 and 2,3 and 3 , 3 and 4 ,4 and 1, 4 and 2  
+         ,4 and 3 and 4 and 4
           
         
      
