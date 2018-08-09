@@ -210,9 +210,11 @@ def send_a_word(book_id, word):
 
     return "Books only from 1 to 4"
 
-
+@app.route("/similarity_of_all/")
 @app.route("/similarity_of_all/<string>")
-def similarity_of_all(string):
+
+
+def similarity_of_all(string='all'):
     if string.lower() == 'all':
         list_of_sim_matrix = dict() #creating a dictionary for the similarities score
         count = 1 #intializing count with 1 which having index of book 1
