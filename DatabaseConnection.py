@@ -115,21 +115,21 @@ def part_of_speech(book_id='all'):
                 if query["stemmed_words_count"]:                # if the stemmed words and count is present but the noun  and verbs are not
                     stemmed_words_count = json.loads(query["stemmed_words_count"]) #just load the json into the dictionaries
                     stemmed_words = json.loads(query["stemmed_words"])#just load the json into the dictionaries
-                    nouns, verbs = Task3.part_of_speech(stemmed_words)  #trigger the function to find the nouns and verbs with the present stemmed words
+                    nouns, verbs = Task3.part_of_speech(stemmed_words,stemmed_words_count)  #trigger the function to find the nouns and verbs with the present stemmed words
                     total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)} #store the total nouns and total verbs in the seprate dictionary
                     updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count) #update the document which already present with respective val
                     return  json.dumps(total_noun_verbs) + json.dumps(nouns) +"verbs : "+json.dumps(verbs)  #return  the json of total nouns verbs, verbs and nouns
 
                 else: # when document is present but it neither contains nouns and verbs and stemmed word count and stemmed words
                     stemmed_words_count, stemmed_words = Task2.stemming(book_id) #tringger the task2 function to get the stemmed words and stemmed words count
-                    nouns, verbs = Task3.part_of_speech(stemmed_words) #tringger the task3 function to get the nouns ,verbs
+                    nouns, verbs = Task3.part_of_speech(stemmed_words,stemmed_words_count) #tringger the task3 function to get the nouns ,verbs
                     total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)} #dictionary of total noun and total verbs
                     updateQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count) #update the document with nouns,verbs,total noun verbs,stemmed words,stemmed words count
                     return   json.dumps(total_noun_verbs) + "nouns :"+json.dumps(nouns) +"verbs : "+json.dumps(verbs) #return the json total_noun_verbs and nouns and verbs
         else:      # when no document present agains book_id
             stemmed_words_count, stemmed_words = Task2.stemming(book_id)# trigger function to get the stemmed words and stemmed words count
             # task3
-            nouns, verbs = Task3.part_of_speech(stemmed_words) #trigger the function part of speech to get the nouns and verbs
+            nouns, verbs = Task3.part_of_speech(stemmed_words,stemmed_words_count) #trigger the function part of speech to get the nouns and verbs
             total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)} #total verbs and total verbs
             insetQueryTask3(book_id, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count) #insert and the data into the database
 
@@ -150,13 +150,13 @@ def part_of_speech(book_id='all'):
                     if query["stemmed_words_count"]:# if the stemmed words and count is present but the noun  and verbs are not
                         stemmed_words_count = json.loads(query["stemmed_words_count"])#just load the json into the dictionaries
                         stemmed_words = json.loads(query["stemmed_words"])#just load the json into the dictionaries
-                        nouns, verbs = Task3.part_of_speech(stemmed_words)#trigger the function to find the nouns and verbs with the present stemmed words
+                        nouns, verbs = Task3.part_of_speech(stemmed_words,stemmed_words_count)#trigger the function to find the nouns and verbs with the present stemmed words
                         total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}#store the total nouns and total verbs in the seprate dictionary
                         updateQueryTask3(book_no, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)#update the document which already present with respective val
 
                     else:# when document is present but it neither contains nouns and verbs and stemmed word count and stemmed words
                         stemmed_words_count, stemmed_words = Task2.stemming(book_no)#tringger the task2 function to get the stemmed words and stemmed words count
-                        nouns, verbs = Task3.part_of_speech(stemmed_words)#tringger the task3 function to get the nouns ,verbs
+                        nouns, verbs = Task3.part_of_speech(stemmed_words,stemmed_words_count)#tringger the task3 function to get the nouns ,verbs
                         total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}#dictionary of total noun and total verbs
                         updateQueryTask3(book_no, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)#update the document with nouns,verbs,total noun verbs,stemmed words,stemmed words count
 
@@ -164,7 +164,7 @@ def part_of_speech(book_id='all'):
 
                 stemmed_words_count, stemmed_words = Task2.stemming(book_no)# trigger function to get the stemmed words and stemmed words count
                 # task3
-                nouns, verbs = Task3.part_of_speech(stemmed_words)#trigger the function part of speech to get the nouns and verbs
+                nouns, verbs = Task3.part_of_speech(stemmed_words,stemmed_words_count)#trigger the function part of speech to get the nouns and verbs
                 total_noun_verbs = {'total_nouns': len(nouns), 'total_verbs': len(verbs)}#total verbs and total verbs
                 insetQueryTask3(book_no, nouns, verbs, total_noun_verbs, stemmed_words, stemmed_words_count)#insert and the data into the database
 

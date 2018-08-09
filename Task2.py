@@ -27,7 +27,12 @@ def stemming(book_id):
     for line in lines:  # reading each line
         for word in line.split():  # spliting each line
             word.lower()  # converting word to lower casw
-            list.append(stemmer.stem(word))  # stemmed the word and it it to a list
+            remove_num = ''.join([i for i in word if i.isalpha()])  # removing all unnecesarry special characters
+
+            if len(remove_num)>1:
+                list.append(stemmer.stem(remove_num))  # stemmed the word and it it to a list
+
+
     for word in list:# first dictionary which will contain stemmed word and there count
         if word not in dictionary1:
             dictionary1[word] = 1  #if the word is not present the intialize it with 1
