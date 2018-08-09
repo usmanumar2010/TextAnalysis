@@ -37,7 +37,8 @@ def show_the_list_of_stop_words(book_id):
         for word in line.split():  # spliting each line
             word.lower()  # convert to lower case each word
             if word not in stop_words:  # checking if word is not a stop word
-                list.append(word)  # making a list of all those words which are not stop words
+                remove_special_char = ''.join([i for i in word if i.isalpha()])
+                list.append(remove_special_char)  # making a list of all those words which are not stop words
     for word in list:  #iterating list
         if word not in dictionary: #seeing each word in dictionary
             dictionary[word]=word #if word not present then place it in a dict

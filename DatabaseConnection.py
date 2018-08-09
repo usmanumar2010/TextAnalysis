@@ -41,7 +41,7 @@ def refined_book(book_id='all'):
                 return  words_json  #return the word_json which has the words
             else:  # if there is a document present but there is a no value against query["words"]
                 data = Task1.show_the_list_of_stop_words(book_id)  #trigger the function of to get the refined text without stop words
-                updateQueryTask2(book_id,data)  #as the document present so just update the value against the book id words
+                updateQueryTask1(book_id,data)  #as the document present so just update the value against the book id words
                 return  json.dumps(data) #return the json words json
         else: #if the query is empty no document is present relative to the book id
             words_are = Task1.show_the_list_of_stop_words(book_id)  #trigger the function in the task1 to get the refind words
@@ -57,13 +57,13 @@ def refined_book(book_id='all'):
                     words_dict = json.loads(query["words"]) #load converting that word json into dictionary
                 else:  # if document is present but there is value against words key
                     words_dict = Task1.show_the_list_of_stop_words(book_no)  # triggering function in task1 file to get words dictionary
-                    updateQueryTask2(book_no, words_dict)  # as the document present so just update the value against the book id words
+                    updateQueryTask1(book_no, words_dict)  # as the document present so just update the value against the book id words
             else:
                 words_dict = Task1.show_the_list_of_stop_words(book_no)##trigger the function in the task1 to get the refind words
                 insertQueryTask1(book_no, words_dict)#inset the document in the database
             my_dict[book_no] = words_dict #placing the dictionaries in the main dictionary so later we can view the words against book id
         return json.dumps(my_dict)  #returning the json containing all the dictionaries
-
+    return "Books only from 1 to 4"
 
 @app.route("/stemmed_lemmatized/")
 @app.route("/stemmed_lemmatized/<book_id>")
@@ -179,14 +179,16 @@ def part_of_speech(book_id='all'):
 @app.route("/similar_documents/<first_book>/<second_book>", methods=['GET'])
 def similar_document(first_book, second_book):
 
-    percentage = Task4.sentence_similarity(first_book, second_book)#trigger the function sentence similarity that will return the score of similarity between two books
+    if first_book== '1' or first_book == '2' or first_book == '3' or first_book == '4' :
+        if second_book== '1' or second_book == '2' or second_book == '3' or second_book== '4':
+             percentage = Task4.sentence_similarity(first_book, second_book)#trigger the function sentence similarity that will return the score of similarity between two books
+             return "The similarity between the two documents is =" + str(percentage) + " percent" #return the score of similarity between two books
 
-    return "The similarity between the two documents is =" + str(percentage) + " percent" #return the score of similarity between two books
-
+    return "Books only from 1 to 4"
 
 @app.route("/send_a_word/<book_id>/<word>")
 def send_a_word(book_id, word):
-    if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4':
+    if book_id == '1' or book_id == '2' or book_id == '3' or book_id == '4' :
 
         stemmer = SnowballStemmer('english') #intializing the stemmer
         base_word = stemmer.stem(word) #stem the word that is comming
@@ -195,16 +197,16 @@ def send_a_word(book_id, word):
         if query:#if something come in the response
             if query["stemmed_words_count"]:  # if stemmed_words_count dictionary is present in database
                 stemmed_words_count = json.loads(query["stemmed_words_count"]) #load the json of stemmed_words in the stemmed_words_count variable
-                return  base_word + ":" + str(stemmed_words_count[base_word])#return the stemmed_word with its count
+                return  base_word + ":" + str(stemmed_words_count.get(base_word,"Word not exists"))#return the stemmed_word with its count
             else:  # if words_count is not present ,id database crashes so not create the collection again just update it
                 stemmed_words_count, stemmed_words = Task2.stemming()  # calling function written in main.py to calculate the word_count with respect to book_id
                 updateQueryTask2(book_id, stemmed_words,
                                  stemmed_words_count)  # updating words against book_id in the database so that next time no need to call the main function again
-                return  base_word + ":" + str(stemmed_words_count[base_word])#return the stemmed_word with its count
+                return  base_word + ":" + str(stemmed_words_count.get(base_word,"Word not exists"))#return the stemmed_word with its count
         else:#if the query is empty no document is present relative to the book id
             stemmed_words_count, stemmed_words = Task2.stemming()#trigger the function in the task2 to get the stemmed words and stemmed words count
             insetQueryTask2(book_id, stemmed_words, stemmed_words_count)#inset the document in the database
-            return  base_word + ":" + str(stemmed_words_count[base_word]) #return the stemmed_word with its count
+            return  base_word + ":" + str(stemmed_words_count.get(base_word,"Word not exists")) #return the stemmed_word with its count
 
     return "Books only from 1 to 4"
 
