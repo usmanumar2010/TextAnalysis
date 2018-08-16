@@ -21,7 +21,7 @@ def stemming(book_id):
     except:
         with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(book_id)),
                   'r',
-                  encoding='UTF8') as f:  # file is opened using encoding utf-8-sig
+                  encoding='ISO-8859-1') as f:  # file is opened using encoding utf-8-sig
             lines = f.readlines()#reading all lines
 
     for line in lines:  # reading each line

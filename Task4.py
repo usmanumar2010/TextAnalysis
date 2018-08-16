@@ -16,7 +16,7 @@ def sentence_similarity(first_book,second_book):
     except:
          with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(first_book)),
               'r',
-              encoding='UTF8') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+             encoding='ISO-8859-1') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
               lines = lines + str(f.readlines())#all file will in lines variable
     sentences = nltk.sent_tokenize(lines) # tokenizing document using nltk into sentences
     gen_docs = [[ "".join(filter(str.isalpha,w.lower()))  for w in word_tokenize(text)] # list of sentences with each sentences is list of tokens word_tokenzie()--> provides listof tokens
@@ -40,7 +40,7 @@ def sentence_similarity(first_book,second_book):
     except:
         count=0
         with open(os.path.join(os.path.dirname(__file__), 'Books', my_books.get(second_book)),
-              'r',encoding='UTF8') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
+              'r',encoding='ISO-8859-1') as f:  # file is opened using encoding utf-8-sig and each line is read and stored in line variable
           if(count<200):
              second_book_lines=second_book_lines+str(f.readlines())
     sentences_second_book = nltk.sent_tokenize(second_book_lines) # tokenizing document using nltk into sentences
