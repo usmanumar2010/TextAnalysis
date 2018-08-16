@@ -44,10 +44,13 @@ also do **`nltk.download('punkt')`**.
 
 * Python 3.5+
 * MongoDB 3+
+
       To install MongoDB Follow this [link](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)   
 * virtualenv -- 
+
      To install virtual environment  `sudo apt-get install python-virtualenv `     
 * Flask --  
+
      To install Flask Follow this [link](http://hanzratech.in/2015/01/16/setting-up-flask-in-ubuntu-14-04-in-virtual-environment.html)
 * PyMongo -- `pip install pymongo`
 * NLTK --  `pip install -U nltk`
