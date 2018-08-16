@@ -17,6 +17,7 @@ Operations that are performed here are :
 
 * Python 3.5+
 * MongoDB 3+
+      
 * virtualenv -- `pip install virtualenv`
 * Flask --  `pip install flask`
 * PyMongo -- `pip install pymongo`
@@ -37,6 +38,38 @@ Operations that are performed here are :
 ## Download
 
 I have used the standard stop words that are present in nltk for that write  **`nltk.download('stopwords')`**
+also do **`nltk.download('punkt')`**.
+
+## For Ubuntu 16.0.4
+
+* Python 3.5+
+* MongoDB 3+
+      To install MongoDB Follow this [link](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)   
+* virtualenv -- 
+     To install virtual environment  `sudo apt-get install python-virtualenv `     
+* Flask --  
+     To install Flask Follow this [link](http://hanzratech.in/2015/01/16/setting-up-flask-in-ubuntu-14-04-in-virtual-environment.html)
+* PyMongo -- `pip install pymongo`
+* NLTK --  `pip install -U nltk`
+* Gensim — `pip install -U gensim`
+
+## Download
+
+I have used the standard stop words that are present in nltk for that write  **`nltk.download('stopwords')`**
+also do **`nltk.download('punkt')`**.
+
+## Installatoin
+
+* Clone the Repository
+* Run a mongo server with `mongod` in a First terminal instance
+* Open another terminal instance
+* Change the directory to `cd ConnectavoAssignment`
+* In ConnectavoAssignment Directory write   `virtualenv flask-env`
+* write  `source flask-env/bin/activate` on this terminal instance
+* After activating environment write `pip install Flask`
+* Now Run DatabaseConnection.py with  `pyhton DatabaseConnection.py`
+* When the Server Start Running
+* Write the following link in the tab [http://127.0.0.1:5000/] 
 
 
 ## Task 1
