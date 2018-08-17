@@ -64,7 +64,7 @@ also do **`nltk.download('punkt')`**.
 ## Installatoin
 
 * Clone the Repository
-* Run a mongo server with `mongod` in a First terminal instance
+* Run a mongo server with command `sudo service mongod start` in a First terminal instance
 * Open another terminal instance
 * Change the directory to `cd ConnectavoAssignment`
 * In ConnectavoAssignment Directory write   `virtualenv flask-env`
